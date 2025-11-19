@@ -24,7 +24,7 @@ This project is also licensed under the Apache License, Version 2.0. See the [LI
 ### Download the Extension
 
 Download the latest Chrome extension from GitHub:
-- **Download link**: https://github.com/microsoft/playwright-mcp/releases
+- **Download link**: [https://github.com/microsoft/playwright-mcp/releases](https://github.com/ZackHu-2001/apply-bot-extension/releases/tag/release)
 
 ### Load Chrome Extension
 
@@ -37,13 +37,16 @@ Download the latest Chrome extension from GitHub:
 Configure applybot MCP server to connect to the browser using the extension by passing the `--extension` option when running the MCP server:
 
 ```json
+
+    
 {
   "mcpServers": {
-    "applybot": {
+    "apply-bot-mcp": {
       "command": "npx",
       "args": [
-        "@applybot/mcp@latest",
-        "--extension"
+          "apply-bot-mcp",
+          "run-mcp-server",
+          "--extension"
       ]
     }
   }
