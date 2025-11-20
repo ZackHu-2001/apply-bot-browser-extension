@@ -1,4 +1,4 @@
-# apply bot
+# Apply Bot Browser Extension
 
 ## Introduction
 
