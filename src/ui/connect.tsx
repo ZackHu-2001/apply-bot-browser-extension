@@ -57,7 +57,7 @@ const ConnectApp: React.FC = () => {
         setClientInfo(info);
         setStatus({
           type: 'connecting',
-          message: `🎭 Playwright MCP started from  "${info}" is trying to connect. Do you want to continue?`
+          message: `Apply Bot MCP started from  "${info}" is trying to connect. Do you want to continue?`
         });
       } catch (e) {
         setStatus({ type: 'error', message: 'Failed to parse client version.' });

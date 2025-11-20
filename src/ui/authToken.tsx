@@ -19,9 +19,8 @@ import { CopyToClipboard } from './copyToClipboard';
 import * as icons from './icons';
 import './authToken.css';
 
-export const AuthTokenSection: React.FC<{}> = ({}) => {
+export const AuthTokenSection: React.FC<{}> = ({ }) => {
   const [authToken, setAuthToken] = useState<string>(getOrCreateAuthToken);
-  const [isExampleExpanded, setIsExampleExpanded] = useState<boolean>(false);
 
   const onRegenerateToken = useCallback(() => {
     const newToken = generateAuthToken();
@@ -29,45 +28,19 @@ export const AuthTokenSection: React.FC<{}> = ({}) => {
     setAuthToken(newToken);
   }, []);
 
-  const toggleExample = useCallback(() => {
-    setIsExampleExpanded(!isExampleExpanded);
-  }, [isExampleExpanded]);
-
   return (
     <div className='auth-token-section'>
-      <div className='auth-token-description'>
-        Set this environment variable to bypass the connection dialog:
-      </div>
-      <div className='auth-token-container'>
-        <code className='auth-token-code'>{authTokenCode(authToken)}</code>
-        <button className='auth-token-refresh' title='Generate new token' aria-label='Generate new token'onClick={onRegenerateToken}>{icons.refresh()}</button>
-        <CopyToClipboard value={authTokenCode(authToken)} />
-      </div>
-
       <div className='auth-token-example-section'>
-        <button
-          className='auth-token-example-toggle'
-          onClick={toggleExample}
-          aria-expanded={isExampleExpanded}
-          title={isExampleExpanded ? 'Hide example config' : 'Show example config'}
-        >
-          <span className={`auth-token-chevron ${isExampleExpanded ? 'expanded' : ''}`}>
-            {icons.chevronDown()}
-          </span>
-          Example MCP server configuration
-        </button>
-
-        {isExampleExpanded && (
-          <div className='auth-token-example-content'>
-            <div className='auth-token-example-description'>
-              Add this configuration to your MCP client (e.g., VS Code) to connect to the Playwright MCP Bridge:
-            </div>
-            <div className='auth-token-example-config'>
-              <code className='auth-token-example-code'>{exampleConfig(authToken)}</code>
-              <CopyToClipboard value={exampleConfig(authToken)} />
-            </div>
+        <h3 className='auth-token-example-title'>Example MCP server configuration</h3>
+        <div className='auth-token-example-content'>
+          <div className='auth-token-example-description'>
+            Add this configuration to your MCP client (e.g., VS Code) to connect to the Apply Bot MCP extension:
           </div>
-        )}
+          <div className='auth-token-example-config'>
+            <code className='auth-token-example-code'>{exampleConfig(authToken)}</code>
+            <CopyToClipboard value={exampleConfig(authToken)} />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -79,14 +52,15 @@ function authTokenCode(authToken: string) {
 
 function exampleConfig(authToken: string) {
   return `{
+
   "mcpServers": {
-    "playwright": {
+    "apply-bot-mcp": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest", "--extension"],
-      "env": {
-        "PLAYWRIGHT_MCP_EXTENSION_TOKEN":
-          "${authToken}"
-      }
+      "args": [
+        "apply-bot-mcp",
+        "run-mcp-server",
+        "--extension"
+      ]
     }
   }
 }`;
@@ -98,14 +72,14 @@ function generateAuthToken(): string {
   crypto.getRandomValues(array);
   // Convert to base64 and make it URL-safe
   return btoa(String.fromCharCode.apply(null, Array.from(array)))
-      .replace(/[+/=]/g, match => {
-        switch (match) {
-          case '+': return '-';
-          case '/': return '_';
-          case '=': return '';
-          default: return match;
-        }
-      });
+    .replace(/[+/=]/g, match => {
+      switch (match) {
+        case '+': return '-';
+        case '/': return '_';
+        case '=': return '';
+        default: return match;
+      }
+    });
 }
 
 export const getOrCreateAuthToken = (): string => {
